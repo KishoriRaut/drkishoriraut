@@ -1,103 +1,95 @@
 import Image from 'next/image';
-import { CheckCircle, Award as AwardIcon, Clock, HeartPulse } from 'lucide-react';
+import { CheckCircle, Award, Clock, HeartPulse, Stethoscope, ShieldCheck, Users, Activity } from 'lucide-react';
 
 export default function About() {
   return (
-    <div className="container mx-auto px-4 py-16">
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
-        {/* Image Column - First on mobile, then follows content */}
-        <div className="lg:col-span-5 order-1">
-          <div className="sticky top-8 space-y-6">
-            <div className="relative rounded-2xl overflow-hidden shadow-xl aspect-[3/4] w-full max-w-md mx-auto mb-8 lg:mb-0">
-              <Image
-                src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
-                alt="Dr. Kishori Raut"
-                fill
-                className="object-cover"
-                sizes="(max-width: 1024px) 100vw, 50vw"
-                priority
-              />
-            </div>
-          
-          {/* Quick Facts Card */}
-          <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-              <svg className="h-5 w-5 text-blue-600 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              Quick Facts
-            </h3>
-            <ul className="space-y-3">
-              <li className="flex items-start">
-                <svg className="h-5 w-5 text-blue-500 mr-2 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                </svg>
-                <span className="text-gray-600"><span className="font-medium text-gray-900">Specialties:</span> Internal Medicine, Preventive Care, Chronic Disease Management</span>
-              </li>
-              <li className="flex items-start">
-                <svg className="h-5 w-5 text-blue-500 mr-2 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                <span className="text-gray-600"><span className="font-medium text-gray-900">Experience:</span> 15+ Years in Practice</span>
-              </li>
-              <li className="flex items-start">
-                <svg className="h-5 w-5 text-blue-500 mr-2 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                </svg>
-                <span className="text-gray-600"><span className="font-medium text-gray-900">Patients Treated:</span> 5000+</span>
-              </li>
-              <li className="flex items-start">
-                <svg className="h-5 w-5 text-blue-500 mr-2 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                </svg>
-                <span className="text-gray-600"><span className="font-medium text-gray-900">Board Certifications:</span> American Board of Internal Medicine</span>
-              </li>
-            </ul>
-          </div>
-        </div>
+    <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
+      <div className="text-center mb-16">
+        <span className="inline-block px-4 py-1.5 text-xs font-medium text-blue-700 bg-blue-100 rounded-full mb-4 tracking-wider uppercase">
+          About Dr. Kishori Raut
+        </span>
+        <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4 leading-tight">
+          Compassionate Care, Exceptional Results
+        </h1>
+        <div className="w-16 h-1 bg-blue-500 mx-auto mb-6"></div>
+        <p className="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
+          Board-certified Internal Medicine specialist with over 15 years of experience in delivering personalized, evidence-based healthcare.
+        </p>
       </div>
 
-      {/* Content Column - Second on mobile, then follows image */}
-      <div className="lg:col-span-7 order-2">
-        <div className="text-center lg:text-left mb-10">
-          <span className="inline-block px-4 py-1.5 text-xs font-medium text-blue-700 bg-blue-100 rounded-full mb-4 tracking-wider uppercase">
-            About Dr. Kishori Raut
-          </span>
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 leading-tight">
-            Compassionate Care, Exceptional Results
-          </h1>
-          <div className="w-20 h-1 bg-gradient-to-r from-blue-500 to-blue-300 mx-auto lg:mx-0 mb-6 rounded-full"></div>
-          <p className="text-lg text-gray-600 max-w-3xl mx-auto lg:mx-0">
-            Board-certified Internal Medicine specialist with over 15 years of experience in delivering personalized, evidence-based healthcare to patients from all walks of life.
-          </p>
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+        {/* Image Section */}
+        <div className="lg:col-span-5">
+          <div className="relative rounded-2xl overflow-hidden shadow-xl aspect-[3/4] w-full max-w-md mx-auto">
+            <Image
+              src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
+              alt="Dr. Kishori Raut"
+              fill
+              className="object-cover"
+              sizes="(max-width: 1024px) 100vw, 50vw"
+              priority
+            />
+          </div>
+          
+          {/* Quick Facts Card */}
+          <div className="card bg-base-100 shadow-sm border border-base-200 mt-8">
+            <div className="card-body p-6">
+              <h3 className="card-title text-lg mb-4">
+                <svg className="w-5 h-5 text-primary mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                Quick Facts
+              </h3>
+              <ul className="space-y-3">
+                <li className="flex items-start">
+                  <Stethoscope className="w-5 h-5 text-primary mr-2 mt-0.5 flex-shrink-0" />
+                  <span className="text-base"><span className="font-semibold">Specialties:</span> Internal Medicine, Preventive Care, Chronic Disease Management</span>
+                </li>
+                <li className="flex items-start">
+                  <Clock className="w-5 h-5 text-primary mr-2 mt-0.5 flex-shrink-0" />
+                  <span className="text-base"><span className="font-semibold">Experience:</span> 15+ Years in Practice</span>
+                </li>
+                <li className="flex items-start">
+                  <Users className="w-5 h-5 text-primary mr-2 mt-0.5 flex-shrink-0" />
+                  <span className="text-base"><span className="font-semibold">Patients Treated:</span> 5000+</span>
+                </li>
+                <li className="flex items-start">
+                  <ShieldCheck className="w-5 h-5 text-primary mr-2 mt-0.5 flex-shrink-0" />
+                  <span className="text-base"><span className="font-semibold">Board Certifications:</span> American Board of Internal Medicine</span>
+                </li>
+              </ul>
+            </div>
+          </div>
         </div>
-        
-        <div className="space-y-8">
+
+        {/* Content Section */}
+        <div className="lg:col-span-7">
           <div className="prose max-w-none">
-            <p className="text-gray-600 leading-relaxed mb-4">
-              Welcome to my practice. I'm Dr. Kishori Raut, a dedicated physician with a passion for internal medicine and preventive care. My journey in medicine began with a simple yet profound belief: every patient deserves compassionate, personalized healthcare that addresses both immediate concerns and long-term wellness.
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">Welcome to My Practice</h2>
+            <p className="text-gray-600 leading-relaxed mb-6">
+              I'm Dr. Kishori Raut, a dedicated physician with a passion for internal medicine and preventive care. My journey in medicine began with a simple yet profound belief: every patient deserves compassionate, personalized healthcare that addresses both immediate concerns and long-term wellness.
             </p>
-            <p className="text-gray-600 leading-relaxed mb-4">
+            <p className="text-gray-600 leading-relaxed mb-6">
               After completing my medical education at Harvard Medical School and subsequent training at Massachusetts General Hospital, I've had the privilege of serving diverse patient populations across various clinical settings. This extensive experience has honed my ability to provide comprehensive care that's tailored to each individual's unique health profile and personal circumstances.
             </p>
-            <p className="text-gray-600 leading-relaxed">
+            <p className="text-gray-600 leading-relaxed mb-8">
               What sets my practice apart is not just my medical expertise, but my commitment to truly listening to my patients. I believe that the best healthcare decisions are made collaboratively, with patients as active participants in their care journey. Whether you're managing a chronic condition, seeking preventive care, or addressing acute health concerns, I'm here to provide guidance, support, and exceptional medical care every step of the way.
             </p>
           </div>
+          
           {/* Areas of Expertise */}
-          <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-            <h3 className="text-xl font-semibold text-gray-900 mb-4 flex items-center">
-              <svg className="h-6 w-6 text-blue-600 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-              </svg>
-              Areas of Expertise
-            </h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-              <div className="bg-blue-50 p-4 rounded-lg">
-                <h4 className="font-medium text-gray-900 mb-2">Preventive Medicine</h4>
-                <p className="text-sm text-gray-600">Comprehensive wellness exams, health screenings, and personalized prevention plans to maintain optimal health.</p>
-              </div>
-              <div className="bg-blue-50 p-4 rounded-lg">
+          <div className="card bg-base-100 shadow-sm border border-base-200 mt-8">
+            <div className="card-body p-6">
+              <h3 className="card-title text-xl mb-6">
+                <Activity className="w-6 h-6 text-primary mr-2" />
+                Areas of Expertise
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="bg-blue-50 p-4 rounded-lg">
+                  <h4 className="font-semibold text-gray-900 mb-2">Preventive Medicine</h4>
+                  <p className="text-sm text-gray-600">Comprehensive wellness exams, health screenings, and personalized prevention plans to maintain optimal health.</p>
+                </div>
+                <div className="bg-blue-50 p-4 rounded-lg">
                 <h4 className="font-medium text-gray-900 mb-2">Chronic Disease Management</h4>
                 <p className="text-sm text-gray-600">Expert care for diabetes, hypertension, heart disease, and other chronic conditions.</p>
               </div>

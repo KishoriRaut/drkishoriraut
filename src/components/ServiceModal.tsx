@@ -3,15 +3,20 @@
 import { X } from 'lucide-react';
 import { useEffect } from 'react';
 
+interface Service {
+  id: number;
+  name: string;
+  title: string;
+  description: string;
+  icon: React.ComponentType<{ className?: string }>;
+  image: string;
+  details?: string[];
+}
+
 interface ServiceModalProps {
   isOpen: boolean;
   onClose: () => void;
-  service: {
-    title: string;
-    description: string;
-    icon: React.ReactNode;
-    details: string[];
-  } | null;
+  service: Service | null;
 }
 
 export default function ServiceModal({ isOpen, onClose, service }: ServiceModalProps) {
@@ -35,6 +40,8 @@ export default function ServiceModal({ isOpen, onClose, service }: ServiceModalP
   }, [isOpen, onClose]);
 
   if (!isOpen || !service) return null;
+  
+  const Icon = service.icon;
 
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto">
@@ -55,11 +62,11 @@ export default function ServiceModal({ isOpen, onClose, service }: ServiceModalP
           <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-3">
-                <div className="rounded-lg bg-white/20 p-2 text-white">
-                  {service.icon}
+                <div className="p-2 bg-white/20 rounded-lg">
+                  <Icon className="h-6 w-6 text-white" />
                 </div>
                 <h3 className="text-xl font-bold text-white">
-                  {service.title}
+                  {service.name}
                 </h3>
               </div>
               <button
@@ -78,46 +85,41 @@ export default function ServiceModal({ isOpen, onClose, service }: ServiceModalP
               {service.description}
             </p>
             
-            <div className="space-y-4">
-              <h4 className="text-lg font-semibold text-gray-900">
-                What's Included:
-              </h4>
-              <ul className="space-y-3">
-                {service.details.map((detail, index) => (
-                  <li key={index} className="flex items-start">
-                    <svg 
-                      className="mt-1 mr-3 h-5 w-5 flex-shrink-0 text-blue-600" 
-                      fill="none" 
-                      viewBox="0 0 24 24" 
-                      stroke="currentColor"
-                    >
-                      <path 
-                        strokeLinecap="round" 
-                        strokeLinejoin="round" 
-                        strokeWidth={2} 
-                        d="M5 13l4 4L19 7" 
-                      />
-                    </svg>
-                    <span className="text-gray-700">{detail}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
+            {service.details && service.details.length > 0 && (
+              <div className="space-y-4">
+                <h4 className="text-lg font-semibold text-gray-900">
+                  What's Included:
+                </h4>
+                <ul className="space-y-3">
+                  {service.details.map((detail, index) => (
+                    <li key={index} className="flex items-start">
+                      <svg 
+                        className="mt-1 mr-3 h-5 w-5 flex-shrink-0 text-blue-600" 
+                        fill="none" 
+                        viewBox="0 0 24 24" 
+                        stroke="currentColor"
+                      >
+                        <path 
+                          strokeLinecap="round" 
+                          strokeLinejoin="round" 
+                          strokeWidth={2} 
+                          d="M5 13l4 4L19 7" 
+                        />
+                      </svg>
+                      <span className="text-gray-700">{detail}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
             
-            <div className="mt-8 flex justify-end space-x-3">
+            <div className="mt-8">
               <button
                 onClick={onClose}
-                className="rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+                className="w-full rounded-md bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
               >
                 Close
               </button>
-              <a
-                href="#appointment"
-                onClick={onClose}
-                className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
-              >
-                Book Appointment
-              </a>
             </div>
           </div>
         </div>

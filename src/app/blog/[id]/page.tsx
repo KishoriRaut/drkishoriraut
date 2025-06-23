@@ -1,159 +1,176 @@
-import { notFound } from 'next/navigation';
+'use client';
+
+import React from 'react';
 import Image from 'next/image';
-import { Calendar, Clock, User, ArrowLeft, Share2, MessageSquare, Facebook, Twitter, Linkedin } from 'lucide-react';
 import Link from 'next/link';
+import { Calendar, Clock, ArrowLeft, Share2, MessageSquare, Facebook, Twitter, Linkedin } from 'lucide-react';
+import { getPostData, getSortedPostsData, PostData } from '@/lib/posts';
 
-// This would typically be a database query
-const getArticle = (id: string) => {
-  const articles = [
-    {
-      id: '1',
-      title: 'Understanding Common Monsoon Illnesses in Nepal',
-      content: [
-        'The monsoon season in Nepal, typically from June to September, brings much-needed relief from the summer heat but also increases the risk of various waterborne and vector-borne diseases. Understanding these illnesses and taking preventive measures can help you stay healthy during this season.',
-        '## Common Monsoon Illnesses in Nepal',
-        '1. **Dengue Fever**: A mosquito-borne viral infection causing high fever, severe headache, and joint pain. The Aedes mosquito, which transmits dengue, breeds in clean, stagnant water.',
-        '2. **Malaria**: Another mosquito-borne disease, more common in the Terai region, causing fever, chills, and flu-like symptoms.',
-        '3. **Cholera**: A waterborne bacterial infection causing severe diarrhea and dehydration, often spread through contaminated water.',
-        '4. **Typhoid**: Caused by Salmonella typhi bacteria, spread through contaminated food and water, leading to high fever and abdominal pain.',
-        '5. **Leptospirosis**: A bacterial infection spread through contact with water contaminated by animal urine, common during floods.',
-        '6. **Viral Fever**: Various viral infections causing fever, body aches, and fatigue are common during monsoon.',
-        '7. **Gastroenteritis**: Inflammation of the stomach and intestines, often caused by contaminated food or water.',
-        '## Prevention Tips',
-        '- Use mosquito nets and repellents to prevent mosquito bites.',
-        '- Drink only boiled or purified water.',
-        '- Maintain good hygiene and wash hands frequently.',
-        '- Avoid street food during the monsoon season.',
-        '- Keep your surroundings clean and eliminate stagnant water where mosquitoes can breed.',
-        '- Get vaccinated for preventable diseases like typhoid if recommended by your doctor.',
-        '## When to See a Doctor',
-        'Seek medical attention if you experience persistent high fever, severe headache, difficulty breathing, blood in stool, or signs of dehydration.'
-      ],
-      author: 'Dr. Kishori Raut',
-      authorRole: 'General Physician',
-      authorImage: 'https://randomuser.me/api/portraits/women/44.jpg',
-      date: 'June 21, 2025',
-      readTime: '6 min read',
-      category: 'Seasonal Health',
-      image: 'https://images.unsplash.com/photo-1601132359862-8d310e62c8af?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80',
-      tags: ['monsoon', 'prevention', 'public health', 'Nepal']
-    },
-  ];
-
-  return articles.find(article => article.id === id) || null;
-};
+// Generate static params for all blog posts
+export async function generateStaticParams() {
+  const posts = getSortedPostsData();
+  return posts.map((post) => ({
+    id: post.id,
+  }));
+}
 
 export default function BlogPostPage({ params }: { params: { id: string } }) {
-  const article = getArticle(params.id);
+  const [post, setPost] = React.useState<PostData | null>(null);
+  const [loading, setLoading] = React.useState(true);
+  const [error, setError] = React.useState<string | null>(null);
 
-  if (!article) {
-    notFound();
+  React.useEffect(() => {
+    const fetchPost = async () => {
+      try {
+        const data = await getPostData(params.id);
+        setPost(data);
+      } catch (err) {
+        console.error('Error fetching post:', err);
+        setError('Failed to load post');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPost();
+  }, [params.id]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-white py-16">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="animate-pulse">
+            <div className="h-6 w-48 bg-gray-200 rounded mb-8"></div>
+            <div className="h-4 w-32 bg-gray-200 rounded mb-4"></div>
+            <div className="h-8 w-full bg-gray-200 rounded mb-6"></div>
+            <div className="h-64 bg-gray-200 rounded-lg mb-8"></div>
+            <div className="space-y-4">
+              {[...Array(6)].map((_, i) => (
+                <div key={i} className="h-4 bg-gray-200 rounded w-full"></div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
   }
+
+  if (error || !post) {
+    return (
+      <div className="min-h-screen bg-white py-16">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <div className="text-red-600 mb-4">
+            {error || 'Post not found'}
+          </div>
+          <Link 
+            href="/blog" 
+            className="inline-flex items-center text-blue-600 hover:text-blue-800"
+          >
+            <ArrowLeft className="h-5 w-5 mr-2" />
+            Back to Blog
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
+  // Calculate read time (assuming 200 words per minute)
+  const wordCount = post.contentHtml?.split(/\s+/).length || 0;
+  const readTime = Math.ceil(wordCount / 200);
 
   return (
     <div className="bg-white">
       <div className="mx-auto max-w-7xl px-6 lg:px-8 py-16">
-        <div className="mx-auto max-w-3xl">
-          <div className="mb-8">
-            <Link href="/blog" className="inline-flex items-center text-sm font-medium text-blue-600 hover:text-blue-500">
-              <ArrowLeft className="mr-2 h-4 w-4" />
-              Back to blog
-            </Link>
-          </div>
-
+        <div className="mx-auto max-w-7xl px-6 lg:px-8 py-16">
+        <div className="max-w-4xl mx-auto">
+          <Link href="/blog" className="inline-flex items-center text-blue-600 hover:text-blue-800 mb-6">
+            <ArrowLeft className="h-5 w-5 mr-2" />
+            Back to Blog
+          </Link>
+          
           <article>
-            <header className="mb-12">
-              <div className="flex items-center gap-x-4 text-sm">
-                <time dateTime={new Date(article.date).toISOString()} className="text-gray-500">
-                  {article.date}
+            <header className="mb-8">
+              <div className="flex items-center text-sm text-gray-500 mb-4">
+                <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded">
+                  {post.category}
+                </span>
+                <span className="mx-2">•</span>
+                <time dateTime={post.date} className="flex items-center">
+                  <Calendar className="h-4 w-4 mr-1" />
+                  {new Date(post.date).toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                  })}
                 </time>
-                <span className="text-gray-300">•</span>
-                <div className="flex items-center gap-1 text-gray-500">
-                  <Clock className="h-4 w-4" />
-                  {article.readTime}
-                </div>
-                <span className="text-gray-300">•</span>
-                <Link href={`/blog/category/${article.category.toLowerCase()}`} className="relative z-10 rounded-full bg-blue-50 px-3 py-1.5 font-medium text-blue-600 hover:bg-blue-100">
-                  {article.category}
-                </Link>
+                <span className="mx-2">•</span>
+                <span className="flex items-center">
+                  <Clock className="h-4 w-4 mr-1" />
+                  {readTime} min read
+                </span>
               </div>
-              <h1 className="mt-4 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-                {article.title}
-              </h1>
-              <div className="mt-6 flex items-center">
-                <div className="relative h-10 w-10 rounded-full bg-gray-100">
-                  <Image
-                    src={article.authorImage}
-                    alt=""
-                    className="rounded-full bg-gray-100 object-cover"
-                    fill
-                    sizes="40px"
-                  />
+              <h1 className="text-4xl font-bold text-gray-900 mb-4">{post.title}</h1>
+              <div className="flex items-center">
+                <div className="h-10 w-10 rounded-full bg-blue-100 text-blue-800 flex items-center justify-center font-bold text-lg mr-3">
+                  {post.author ? post.author.charAt(0) : 'A'}
                 </div>
-                <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-900">
-                    {article.author}
-                  </p>
-                  <p className="text-sm text-gray-500">{article.authorRole}</p>
+                <div>
+                  <p className="font-medium text-gray-900">{post.author || 'Admin'}</p>
+                  <p className="text-sm text-gray-500">Author</p>
                 </div>
               </div>
             </header>
 
-            <div className="relative aspect-[16/9] w-full overflow-hidden rounded-2xl bg-gray-100">
-              <Image
-                src={article.image}
-                alt=""
-                className="object-cover"
-                fill
-                sizes="(max-width: 1280px) 100vw, 1280px"
-                priority
-              />
-            </div>
+            {post.image && (
+              <div className="relative h-96 w-full mb-8 rounded-lg overflow-hidden">
+                <Image
+                  src={post.image}
+                  alt={post.title}
+                  fill
+                  className="object-cover"
+                  priority
+                />
+              </div>
+            )}
 
-            <div className="prose prose-blue prose-lg mx-auto mt-12 max-w-3xl">
-              {article.content.map((paragraph, index) => (
-                <p key={index} className="text-gray-600 mb-6 leading-8">
-                  {paragraph}
-                </p>
-              ))}
+            <div 
+              className="prose max-w-none mb-12"
+              dangerouslySetInnerHTML={{ __html: post.contentHtml || '' }}
+            />
 
-              <div className="mt-12 border-t border-gray-200 pt-8">
-                <div className="flex flex-wrap gap-2">
-                  {article.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="inline-flex items-center rounded-full bg-gray-100 px-3 py-1 text-sm font-medium text-gray-600"
-                    >
+            {(post.tags && post.tags.length > 0) && (
+              <div className="border-t border-gray-200 pt-8">
+                <div className="flex flex-wrap gap-2 mb-6">
+                  {post.tags.map((tag: string) => (
+                    <span key={tag} className="bg-gray-100 text-gray-800 text-xs font-medium px-2.5 py-0.5 rounded">
                       {tag}
                     </span>
                   ))}
                 </div>
-
-                <div className="mt-8 flex items-center justify-between border-t border-gray-200 pt-6">
-                  <div className="flex items-center space-x-4">
-                    <span className="text-sm font-medium text-gray-900">Share:</span>
-                    <div className="flex space-x-3">
-                      <a href="#" className="text-gray-400 hover:text-gray-500">
-                        <span className="sr-only">Facebook</span>
-                        <Facebook className="h-5 w-5" />
-                      </a>
-                      <a href="#" className="text-gray-400 hover:text-gray-500">
-                        <span className="sr-only">Twitter</span>
-                        <Twitter className="h-5 w-5" />
-                      </a>
-                      <a href="#" className="text-gray-400 hover:text-gray-500">
-                        <span className="sr-only">LinkedIn</span>
-                        <Linkedin className="h-5 w-5" />
-                      </a>
-                    </div>
+                <div className="flex items-center justify-between">
+                  <div className="flex space-x-4">
+                    <button className="text-gray-500 hover:text-gray-700">
+                      <Share2 className="h-5 w-5" />
+                    </button>
+                    <a href="#comments" className="text-gray-500 hover:text-gray-700 flex items-center">
+                      <MessageSquare className="h-5 w-5 mr-1" />
+                      <span>Comment</span>
+                    </a>
                   </div>
-                  <Link
-                    href="/contact"
-                    className="inline-flex items-center rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-                  >
-                    <MessageSquare className="mr-2 h-4 w-4" />
-                    Leave a comment
-                  </Link>
+                  <div className="flex space-x-3">
+                    <a href="#" className="text-gray-400 hover:text-blue-600">
+                      <span className="sr-only">Share on Facebook</span>
+                      <Facebook className="h-5 w-5" />
+                    </a>
+                    <a href="#" className="text-gray-400 hover:text-blue-400">
+                      <span className="sr-only">Share on Twitter</span>
+                      <Twitter className="h-5 w-5" />
+                    </a>
+                    <a href="#" className="text-gray-400 hover:text-blue-700">
+                      <span className="sr-only">Share on LinkedIn</span>
+                      <Linkedin className="h-5 w-5" />
+                    </a>
+                  </div>
                 </div>
               </div>
             </div>
